@@ -24,7 +24,7 @@ app.use('/api/components', componentRoutes);
 app.use('/api/uploads', uploadRoutes); // Add the new route
 app.use('/api/users', updateUserRoutes); // Add the new route
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server started on port ${PORT}`);
 });
