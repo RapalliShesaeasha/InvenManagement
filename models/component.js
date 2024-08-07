@@ -6,6 +6,6 @@ const ComponentSchema = new mongoose.Schema({
     quantity: { type: String, required: true }
 });
 
-const Component = mongoose.model('Component', ComponentSchema);
+const Component = mongoose.models.Component || mongoose.model('Component', ComponentSchema);
 
 export default Component;
