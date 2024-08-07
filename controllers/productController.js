@@ -25,11 +25,11 @@ export const getProducts = async (req, res) => {
 };
 
 export const checkProduct = async (req, res) => {
-    const { name } = req.query;
+    const { productName } = req.query; // Ensure this matches the query parameter name used in the frontend
 
     try {
         // Find the product
-        const product = await Product.findOne({ name });
+        const product = await Product.findOne({ name: productName });
         if (!product) {
             return res.status(404).json({ msg: 'Product not found' });
         }
@@ -50,9 +50,9 @@ export const checkProduct = async (req, res) => {
         }
 
         res.json({
-            product: product.name,
+            productName: product.name,
             components: productComponents,
-            quantity: minQuantity
+            canMake: minQuantity
         });
     } catch (err) {
         console.error(err.message);
