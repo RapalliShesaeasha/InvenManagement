@@ -6,4 +6,4 @@ const router = express.Router();
 router.get('/all', getComponents);
 router.post('/add', addComponent);
 
-export default router
+export default router;
