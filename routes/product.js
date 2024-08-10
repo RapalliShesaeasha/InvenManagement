@@ -7,4 +7,4 @@ router.post('/add', addProduct);
 router.get('/all', getProducts);
 router.get('/check', checkProduct);
 
-export default router
+export default router;
