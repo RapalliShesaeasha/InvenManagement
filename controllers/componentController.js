@@ -1,5 +1,6 @@
-import Component from '../models/component.js';
+import Component from '../models/Component.js';
 
+// Get all components
 export const getComponents = async (req, res) => {
     try {
         const components = await Component.find();
@@ -9,6 +10,7 @@ export const getComponents = async (req, res) => {
     }
 };
 
+// Add a new component
 export const addComponent = async (req, res) => {
     const { name, specification, quantity } = req.body;
     try {
