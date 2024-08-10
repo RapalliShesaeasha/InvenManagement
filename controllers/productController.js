@@ -44,7 +44,7 @@ export const checkProduct = async (req, res) => {
         let minQuantity = Number.MAX_VALUE;
         for (let comp of productComponents) {
             if (!componentMap.has(comp)) {
-                return res.status(404).json({ msg: Component ${comp} not found });
+               return res.status(404).json({ msg: `Component ${comp} not found` });
             }
             minQuantity = Math.min(minQuantity, componentMap.get(comp));
         }
