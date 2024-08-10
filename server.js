@@ -6,7 +6,7 @@ import authRoutes from './routes/auth.js';
 import productRoutes from './routes/product.js';
 import componentRoutes from './routes/component.js';
 import uploadRoutes from './routes/upload.js';
-import updateUserRoutes from './routes/updateUser.js'; // Import the new route
+import updateUserRoutes from './routes/updateUser.js';
 
 dotenv.config();
 
@@ -21,10 +21,10 @@ app.use('/uploads', express.static('uploads'));
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/components', componentRoutes);
-app.use('/api/uploads', uploadRoutes); // Add the new route
-app.use('/api/users', updateUserRoutes); // Add the new route
+app.use('/api/uploads', uploadRoutes);
+app.use('/api/users', updateUserRoutes);
 
-// Add a test route
+// Test route
 app.get('/test', (req, res) => {
     res.send('Test route is working!');
 });
