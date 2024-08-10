@@ -10,7 +10,7 @@ const ProductSchema = new mongoose.Schema({
         required: true,
     },
     components: {
-        type: [String], // Array of strings to store components
+        type: [String], // Array of strings to store component names
         default: []
     }
 });
