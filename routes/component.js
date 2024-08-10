@@ -1,4 +1,4 @@
-mport express from 'express';
+import express from 'express';
 import { getComponents, addComponent } from '../controllers/componentController.js';
 
 const router = express.Router();
