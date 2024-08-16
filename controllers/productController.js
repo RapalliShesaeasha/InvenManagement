@@ -37,7 +37,10 @@ export const checkProduct = async (req, res) => {
         console.log('Product found:', product);
 
         // Find all components associated with this product
-        const components = await Component.find({ name: { $in: product.components } });
+        const componentNames = product.components;
+        console.log('Component names to find:', componentNames);
+
+        const components = await Component.find({ name: { $in: componentNames } });
         console.log('Components found:', components);
 
         if (components.length === 0) {
@@ -45,7 +48,7 @@ export const checkProduct = async (req, res) => {
         }
 
         // Ensure all components are included in the response
-        const componentDetails = product.components.map(compName => {
+        const componentDetails = componentNames.map(compName => {
             const foundComponent = components.find(comp => comp.name === compName);
             return foundComponent ? {
                 name: foundComponent.name,
@@ -53,6 +56,8 @@ export const checkProduct = async (req, res) => {
                 quantity: foundComponent.quantity
             } : null;
         }).filter(comp => comp !== null); // Filter out any null values in case some components were not found
+
+        console.log('Component details to return:', componentDetails);
 
         // Calculate the minimum quantity of products that can be produced based on component quantities
         const minQuantity = Math.min(...componentDetails.map(comp => comp.quantity));
@@ -67,3 +72,4 @@ export const checkProduct = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
+
