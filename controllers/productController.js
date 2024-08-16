@@ -37,7 +37,7 @@ export const checkProduct = async (req, res) => {
         const componentMap = new Map();
         components.forEach(c => componentMap.set(c.name, c.quantity));
 
-        const productComponents = product.components;
+        const productComponents = product.components.map(c => c.name);
         let minQuantity = Infinity;
 
         for (let comp of productComponents) {
