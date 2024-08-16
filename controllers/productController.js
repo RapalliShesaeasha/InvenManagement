@@ -28,7 +28,7 @@ export const checkProduct = async (req, res) => {
     const { productName } = req.query;
 
     try {
-        // Find the product
+        // Find the product by name
         const product = await Product.findOne({ name: productName });
         if (!product) {
             return res.status(404).json({ msg: 'Product not found' });
@@ -40,12 +40,22 @@ export const checkProduct = async (req, res) => {
             return res.status(404).json({ msg: 'Components not found for this product' });
         }
 
-        // Calculate the minimum quantity of products that can be produced
-        let minQuantity = Math.min(...components.map(comp => comp.quantity));
+        // Ensure all components are included in the response
+        const componentDetails = product.components.map(compName => {
+            const foundComponent = components.find(comp => comp.name === compName);
+            return foundComponent ? {
+                name: foundComponent.name,
+                specification: foundComponent.specification,
+                quantity: foundComponent.quantity
+            } : null;
+        }).filter(comp => comp !== null); // Filter out any null values in case some components were not found
+
+        // Calculate the minimum quantity of products that can be produced based on component quantities
+        const minQuantity = Math.min(...componentDetails.map(comp => comp.quantity));
 
         res.json({
             productName: product.name,
-            components: components.map(comp => ({ name: comp.name, specification: comp.specification, quantity: comp.quantity })),
+            components: componentDetails,
             canMake: minQuantity
         });
     } catch (err) {
