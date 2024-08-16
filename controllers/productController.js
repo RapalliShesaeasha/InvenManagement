@@ -25,33 +25,30 @@ export const getProducts = async (req, res) => {
 };
 
 export const checkProduct = async (req, res) => {
-    const { productName } = req.query;
+    const { productName } = req.query; // Ensure this matches the query parameter name used in the frontend
 
     try {
-        // Find the product by its name
+        // Find the product
         const product = await Product.findOne({ name: productName });
         if (!product) {
             return res.status(404).json({ msg: 'Product not found' });
         }
 
-        // Get the list of all components
+        // Find all components
         const components = await Component.find();
         const componentMap = new Map();
         components.forEach(c => componentMap.set(c.name, c.quantity));
 
-        // Retrieve the product's components
-        const productComponents = product.components.map(c => c.name);
-        let minQuantity = Infinity;
-
-        // Check if each component in the product exists and calculate the minimum quantity
-        for (let compName of productComponents) {
-            if (!componentMap.has(compName)) {
-                return res.status(404).json({ msg: `Component ${compName} not found` });
+        // Calculate how many products can be made
+        const productComponents = product.components;
+        let minQuantity = Number.MAX_VALUE;
+        for (let comp of productComponents) {
+            if (!componentMap.has(comp)) {
+               return res.status(404).json({ msg: `Component ${comp} not found` });
             }
-            minQuantity = Math.min(minQuantity, componentMap.get(compName));
+            minQuantity = Math.min(minQuantity, componentMap.get(comp));
         }
 
-        // Respond with the product name, its components, and the minimum quantity that can be produced
         res.json({
             productName: product.name,
             components: productComponents,
