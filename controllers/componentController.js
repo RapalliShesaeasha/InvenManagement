@@ -1,4 +1,4 @@
-import Component from '../models/Component.js';
+import Component from '../models/component.js';
 
 // Get all components
 export const getComponents = async (req, res) => {
