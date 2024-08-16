@@ -1,18 +1,5 @@
 import mongoose from 'mongoose';
 
-// Subschema for components with their quantities
-const ComponentSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true,
-    },
-    quantity: {
-        type: Number,
-        required: true,
-    }
-});
-
-// Main Product schema
 const ProductSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -23,7 +10,7 @@ const ProductSchema = new mongoose.Schema({
         required: true,
     },
     components: {
-        type: [ComponentSchema], // Array of components with quantities
+        type: [String], // Array of strings to store components
         default: []
     }
 });
