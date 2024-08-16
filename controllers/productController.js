@@ -34,8 +34,12 @@ export const checkProduct = async (req, res) => {
             return res.status(404).json({ msg: 'Product not found' });
         }
 
+        console.log('Product found:', product);
+
         // Find all components associated with this product
         const components = await Component.find({ name: { $in: product.components } });
+        console.log('Components found:', components);
+
         if (components.length === 0) {
             return res.status(404).json({ msg: 'Components not found for this product' });
         }
