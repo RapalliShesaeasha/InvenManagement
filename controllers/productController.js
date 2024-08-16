@@ -25,7 +25,7 @@ export const getProducts = async (req, res) => {
 };
 
 export const checkProduct = async (req, res) => {
-    const { productName } = req.query; // Ensure this matches the query parameter name used in the frontend
+    const { productName } = req.query;
 
     try {
         // Find the product
@@ -34,24 +34,18 @@ export const checkProduct = async (req, res) => {
             return res.status(404).json({ msg: 'Product not found' });
         }
 
-        // Find all components
-        const components = await Component.find();
-        const componentMap = new Map();
-        components.forEach(c => componentMap.set(c.name, c.quantity));
-
-        // Calculate how many products can be made
-        const productComponents = product.components;
-        let minQuantity = Number.MAX_VALUE;
-        for (let comp of productComponents) {
-            if (!componentMap.has(comp)) {
-               return res.status(404).json({ msg: `Component ${comp} not found` });
-            }
-            minQuantity = Math.min(minQuantity, componentMap.get(comp));
+        // Find all components associated with this product
+        const components = await Component.find({ name: { $in: product.components } });
+        if (components.length === 0) {
+            return res.status(404).json({ msg: 'Components not found for this product' });
         }
+
+        // Calculate the minimum quantity of products that can be produced
+        let minQuantity = Math.min(...components.map(comp => comp.quantity));
 
         res.json({
             productName: product.name,
-            components: productComponents,
+            components: components.map(comp => ({ name: comp.name, specification: comp.specification, quantity: comp.quantity })),
             canMake: minQuantity
         });
     } catch (err) {
