@@ -28,8 +28,8 @@ export const checkProduct = async (req, res) => {
     const { productName } = req.query;
 
     try {
-        // Find the product by name
-        const product = await Product.findOne({ name: productName });
+        // Find the product by name (case-insensitive)
+        const product = await Product.findOne({ name: { $regex: new RegExp(`^${productName}$`, 'i') } });
         if (!product) {
             return res.status(404).json({ msg: 'Product not found' });
         }
@@ -72,4 +72,3 @@ export const checkProduct = async (req, res) => {
         res.status(500).send('Server error');
     }
 };
-
