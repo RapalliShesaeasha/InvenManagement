@@ -50,9 +50,9 @@ export const checkProduct = async (req, res) => {
         const components = await Component.find({ name: { $in: componentNames } });
         console.log('Components found:', components);
 
-        if (components.length === 0) {
-            return res.status(404).json({ msg: 'Components not found for this product' });
-        }
+        // Determine which components are missing
+        const foundComponentNames = components.map(comp => comp.name);
+        const missingComponentNames = componentNames.filter(compName => !foundComponentNames.includes(compName));
 
         // Ensure all components are included in the response
         const componentDetails = componentNames.map(compName => {
@@ -72,6 +72,7 @@ export const checkProduct = async (req, res) => {
         res.json({
             productName: product.name,
             components: componentDetails,
+            missingComponents: missingComponentNames,
             canMake: minQuantity
         });
     } catch (err) {
