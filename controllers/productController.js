@@ -25,12 +25,19 @@ export const getProducts = async (req, res) => {
 };
 
 export const checkProduct = async (req, res) => {
-    const { productName } = req.query;
+    const productName = decodeURIComponent(req.query.productName).trim(); // Decode and trim the product name
 
     try {
+        // Logging the incoming product name
+        console.log(`Searching for product: "${productName}"`);
+
         // Find the product by name (case-insensitive)
-        const product = await Product.findOne({ name: { $regex: new RegExp(`^${productName}$`, 'i') } });
+        const product = await Product.findOne({
+            name: { $regex: new RegExp(`^${productName}$`, 'i') }
+        });
+
         if (!product) {
+            console.log('Product not found');
             return res.status(404).json({ msg: 'Product not found' });
         }
 
@@ -55,7 +62,7 @@ export const checkProduct = async (req, res) => {
                 specification: foundComponent.specification,
                 quantity: foundComponent.quantity
             } : null;
-        }).filter(comp => comp !== null); // Filter out any null values in case some components were not found
+        }).filter(comp => comp !== null);
 
         console.log('Component details to return:', componentDetails);
 
