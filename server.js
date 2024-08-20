@@ -7,6 +7,8 @@ import productRoutes from './routes/product.js';
 import componentRoutes from './routes/component.js';
 import uploadRoutes from './routes/upload.js';
 import updateUserRoutes from './routes/updateUser.js'; // Import the new route
+import ratingRoutes from './routes/rating.js'; // Import the rating routes
+
 
 dotenv.config();
 
@@ -23,6 +25,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/components', componentRoutes);
 app.use('/api/uploads', uploadRoutes); // Add the new route
 app.use('/api/users', updateUserRoutes); // Add the new route
+app.use('/api/ratings', ratingRoutes); // Add the rating routes
 
 // Add a test route
 app.get('/test', (req, res) => {
