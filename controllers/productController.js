@@ -66,14 +66,18 @@ export const checkProduct = async (req, res) => {
 
         console.log('Component details to return:', componentDetails);
 
-        // Calculate the minimum quantity of products that can be produced based on component quantities
-        const minQuantity = Math.min(...componentDetails.map(comp => comp.quantity));
+        // Determine the number of products that can be made
+        let canMake = 0;
+        if (missingComponentNames.length === 0) {
+            // Calculate the minimum quantity of products that can be produced based on component quantities
+            canMake = Math.min(...componentDetails.map(comp => comp.quantity));
+        }
 
         res.json({
             productName: product.name,
             components: componentDetails,
             missingComponents: missingComponentNames,
-            canMake: minQuantity
+            canMake: canMake
         });
     } catch (err) {
         console.error(err.message);
